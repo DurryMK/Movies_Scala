@@ -17,30 +17,37 @@ import org.apache.spark.sql.SparkSession
  *
  **/
 object Test1 extends App {
+  //调整日志输出级别，只输出ERROR信息
   Logger.getLogger("org").setLevel(Level.ERROR)
-  val session = SparkSession //2.x的SparkSession
+  val session = SparkSession //spark2.x的SparkSession
     .builder()
     .appName("app3")
     .master("local[*]")
     .getOrCreate()
-  val sql = session.sqlContext
 
   import session.implicits._
 
-  /*session.read.textFile("src/main/data/movies.dat").map(line=>{
-    var x = line.split("::")
-    (x(0),x(1),x(2))
-  }).toDF("ID","NAME","TYPE").show()*/
-
-  session.read.textFile("src/main/data/users.dat").map(line => {
+  //读取用户信息
+  var userDF = session.read.textFile("src/main/data/users.dat").map(line => {
     var x = line.split("::")
     (x(0), x(1), x(2), x(3), x(4))
-  }).toDF("ID", "GENDER", "AGE", "OCCUPATION", "CODE").createTempView("user")
+  }).toDF("id", "gender", "age", "occupation", "code") //设置列名
+  //并创建视图
+  userDF.createTempView("user")
 
-  session.read.textFile("src/main/data/occupation.dat").map(line => {
+  //读取职业信息
+  var occupationDF = session.read.textFile("src/main/data/occupation.dat").map(line => {
     var x = line.split("::")
     (x(0), x(1))
-  }).toDF("ID", "NAME").createTempView("occupation")
+  }).toDF("oid", "name")
+  occupationDF.createTempView("occupation")
 
-  session.sql("select occupation.ID occupid,user.ID userid,GENDER,AGE,CODE,occupation.NAME from user right join occupation where user.OCCUPATION=occupation.ID").show()
+  //SQL查询方案
+  //联立查询
+  session.sql("select occupation.oid occupid,user.id userid,gender,age,code,occupation.name from " +
+    "user inner join occupation on user.occupation=occupation.oid").show()
+
+  //API方案
+
+  userDF.join(occupationDF,$"occupation"===$"oid").select("oid","id","gender","age","occupation","code","name").show(20)
 }
