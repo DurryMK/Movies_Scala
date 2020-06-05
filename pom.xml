@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!--<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -17,7 +17,6 @@
     </properties>
 
     <dependencies>
-        <!-- 导入scala的依赖 -->
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
@@ -25,14 +24,12 @@
         </dependency>
 
 
-        <!-- 导入spark的依赖 -->
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_2.11</artifactId>
             <version>${spark.version}</version>
         </dependency>
 
-        <!-- 指定hadoop-client API的版本 -->
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>
@@ -61,13 +58,11 @@
     <build>
         <pluginManagement>
             <plugins>
-                <!-- 编译scala的插件 -->
                 <plugin>
                     <groupId>net.alchim31.maven</groupId>
                     <artifactId>scala-maven-plugin</artifactId>
                     <version>3.2.2</version>
                 </plugin>
-                <!-- 编译java的插件 -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -112,7 +107,6 @@
             </plugin>
 
 
-            <!-- 打jar插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -141,4 +135,4 @@
         </plugins>
     </build>
 
-</project>
+</project>-->
